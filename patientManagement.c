@@ -15,6 +15,8 @@ extern int patientAges[];
 extern double finalPayableAmounts[];
 extern int specialtyIDs[];
 extern char patientNames[100][50];
+
+
 void calculatePatientBill(int index) {
     double waitTime = specialtyQueueCounts[specialtyIDs[index] - 1] * consultationTimes[specialtyIDs[index] - 1];
     (void)waitTime;
@@ -117,5 +119,58 @@ void registerPatient() {
     printf("Final Payable  : %.2f LKR\n", finalPayableAmounts[index]);
     printf("========================================\n");
     printf("[SUCCESS] Registration & Billing Completed!\n");
+    printf("========================================\n");
+}
+
+
+void displayPerformanceReports(int totalRegisteredPatients) {
+    if (totalRegisteredPatients <= 0) {
+        printf("\n[INFO] No patients registered yet to generate reports!\n");
+        return;
+    }
+
+    int normalCount = 0, urgentCount = 0, criticalCount = 0;
+    double totalRevenue = 0.0;
+    double totalDiscounts = 0.0;
+
+    double maxBill = -1.0;
+    int maxIndex = 0;
+
+    for (int i = 0; i < totalRegisteredPatients; i++) {
+        if (urgencyLevels[i] == 1) normalCount++;
+        else if (urgencyLevels[i] == 2) urgentCount++;
+        else if (urgencyLevels[i] == 3) criticalCount++;
+
+        double baseFee = baseConsultationFees[specialtyIDs[i] - 1];
+        double surcharge = (urgencyLevels[i] == 2) ? baseFee * 0.20 : ((urgencyLevels[i] == 3) ? baseFee * 0.50 : 0.0);
+        double wardCost = (wardAdmissions[i] == 1) ? daysAdmitted[i] * dailyBedRates[wardIDs[i] - 1] : 0.0;
+        double grossTotal = baseFee + surcharge + wardCost;
+        double discount = (patientAges[i] < 5 || patientAges[i] > 65) ? grossTotal * 0.15 : 0.0;
+
+        totalRevenue += finalPayableAmounts[i];
+        totalDiscounts += discount;
+
+        if (finalPayableAmounts[i] > maxBill) {
+            maxBill = finalPayableAmounts[i];
+            maxIndex = i;
+        }
+    }
+
+    printf("\n========================================\n");
+    printf("     PERFORMANCE REPORTS & ANALYTICS    \n");
+    printf("========================================\n");
+    printf("1. Patient Intake Summary:\n");
+    printf("   - Total Registered Patients : %d\n", totalRegisteredPatients);
+    printf("   - Normal (Level 1)          : %d\n", normalCount);
+    printf("   - Urgent (Level 2)          : %d\n", urgentCount);
+    printf("   - Critical (Level 3)        : %d\n", criticalCount);
+
+    printf("\n2. Financial Analytics:\n");
+    printf("   - Total Revenue Earned      : %.2f LKR\n", totalRevenue);
+    printf("   - Total Discounts Granted   : %.2f LKR\n", totalDiscounts);
+
+    printf("\n3. Highest-Paying Patient:\n");
+    printf("   - Name                      : %s\n", patientNames[maxIndex]);
+    printf("   - Final Bill Amount         : %.2f LKR\n", maxBill);
     printf("========================================\n");
 }
