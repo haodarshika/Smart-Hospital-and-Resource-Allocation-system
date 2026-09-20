@@ -6,7 +6,7 @@
 
 int main(void) {
     int choice;
-    printf("Smart Hospital System Initialized\n");
+    printf("Smart Hospital System Initialized\n");// Initialize system execution
 
     do {
         printf("\n========================================\n");
