@@ -36,6 +36,7 @@ int main(void) {
                 printf("\n[ERROR] Invalid choice! Please enter 1 to 4.\n");
         }
     } while (choice != 4);
+    // Program executed successfully
 
     return 0;
 }
