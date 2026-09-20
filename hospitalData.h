@@ -7,8 +7,8 @@
 
 
 
-extern const char specialtynames[TOTAL_SPECIALTIES][30];
+extern const char specialtyNames[TOTAL_SPECIALTIES][30];
 extern const double baseConsultationFees[TOTAL_SPECIALTIES];
-extern const int  ConsultationTimes[TOTAL_SPECIALTIES];
+extern const int  consultationTimes[TOTAL_SPECIALTIES];
 
 #endif
