@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1789895232 source:c:\users\yash technology\desktop\smart hospital and resource allocation system\main.c
+	<stdio.h>
+	"hospitalData.h"
+	"patientManagement.h"
+
+1789897191 c:\users\yash technology\desktop\smart hospital and resource allocation system\hospitaldata.h
+
+1789895196 c:\users\yash technology\desktop\smart hospital and resource allocation system\patientmanagement.h
+
+1789896489 source:c:\users\yash technology\desktop\smart hospital and resource allocation system\patientmanagement.c
+	<stdio.h>
+	<string.h>
+	"hospitalData.h"
+	"patientManagement.h"
+
+1789890359 source:c:\users\yash technology\desktop\smart hospital and resource allocation system\hospitaldata.c
+	"hospitalData.h"
+

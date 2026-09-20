@@ -2,7 +2,7 @@
 #define HOSPITAL_DATA_H
 #define TOTAL_SPECIALTIES 4
 #define TOTAL_WARDS 4
-
+#define MAX_PATIENTS 100
 #define MAX_BED_CAPACITY 20
 
 
