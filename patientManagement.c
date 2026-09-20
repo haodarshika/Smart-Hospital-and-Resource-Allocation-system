@@ -15,8 +15,6 @@ extern int patientAges[];
 extern double finalPayableAmounts[];
 extern int specialtyIDs[];
 extern char patientNames[100][50];
-
-
 void calculatePatientBill(int index) {
     double waitTime = specialtyQueueCounts[specialtyIDs[index] - 1] * consultationTimes[specialtyIDs[index] - 1];
     (void)waitTime;
@@ -44,6 +42,7 @@ void calculatePatientBill(int index) {
 
     finalPayableAmounts[index] = grossTotal - discount;
 }
+
 
 void registerPatient() {
     int index = 0;
@@ -93,7 +92,30 @@ void registerPatient() {
         daysAdmitted[index] = 0;
     }
 
+
     calculatePatientBill(index);
-    printf("\n[SUCCESS] Patient registered and bill calculated successfully!\n");
+
+
+    double baseFee = baseConsultationFees[specialtyIDs[index] - 1];
+    double surcharge = (urgencyLevels[index] == 2) ? baseFee * 0.20 : ((urgencyLevels[index] == 3) ? baseFee * 0.50 : 0.0);
+    double wardCost = (wardAdmissions[index] == 1) ? daysAdmitted[index] * dailyBedRates[wardIDs[index] - 1] : 0.0;
+    double grossTotal = baseFee + surcharge + wardCost;
+    double discount = (patientAges[index] < 5 || patientAges[index] > 65) ? grossTotal * 0.15 : 0.0;
+
+
+    printf("\n========================================\n");
+    printf("           DETAILED BILL BREAKDOWN      \n");
+    printf("========================================\n");
+    printf("Patient Name   : %s\n", patientNames[index]);
+    printf("Patient Age    : %d\n", patientAges[index]);
+    printf("Base Fee       : %.2f LKR\n", baseFee);
+    printf("Urgency Fee    : %.2f LKR\n", surcharge);
+    printf("Ward Cost      : %.2f LKR\n", wardCost);
+    printf("Gross Total    : %.2f LKR\n", grossTotal);
+    printf("Age Discount   : %.2f LKR\n", discount);
+    printf("----------------------------------------\n");
+    printf("Final Payable  : %.2f LKR\n", finalPayableAmounts[index]);
+    printf("========================================\n");
+    printf("[SUCCESS] Registration & Billing Completed!\n");
     printf("========================================\n");
 }
