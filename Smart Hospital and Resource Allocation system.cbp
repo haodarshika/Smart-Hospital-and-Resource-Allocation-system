@@ -31,8 +31,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="hospitalData.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="hospitalData.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="patientManagement.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="patientManagement.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Extensions />
 	</Project>
