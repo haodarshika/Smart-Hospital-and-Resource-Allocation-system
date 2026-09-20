@@ -121,10 +121,43 @@ void registerPatient() {
     printf("[SUCCESS] Registration & Billing Completed!\n");
     printf("========================================\n");
 }
+void displaySortedPatients(void) {
+    if (totalPatients <= 0) {
+        printf("\n[INFO] No patients registered yet to sort!\n");
+        return;
+    }
+
+    int indices[MAX_PATIENTS];
+    for (int i = 0; i < totalPatients; i++) {
+        indices[i] = i;
+    }
 
 
-void displayPerformanceReports(int totalRegisteredPatients) {
-    if (totalRegisteredPatients <= 0) {
+    for (int i = 0; i < totalPatients - 1; i++) {
+        for (int j = 0; j < totalPatients - i - 1; j++) {
+            if (urgencyLevels[indices[j]] < urgencyLevels[indices[j + 1]]) {
+                int temp = indices[j];
+                indices[j] = indices[j + 1];
+                indices[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("\n==================================================\n");
+    printf("       PATIENTS SORTED BY URGENCY PRIORITY        \n");
+    printf("==================================================\n");
+    for (int i = 0; i < totalPatients; i++) {
+        int idx = indices[i];
+        printf("%d. Name: %-15s | Urgency: Level %d | Payable: %.2f LKR\n",
+               i + 1, patientNames[idx], urgencyLevels[idx], finalPayableAmounts[idx]);
+    }
+    printf("==================================================\n");
+}
+
+
+
+    void displayPerformanceReports(void) {
+    if (totalPatients <= 0) {
         printf("\n[INFO] No patients registered yet to generate reports!\n");
         return;
     }
@@ -136,7 +169,7 @@ void displayPerformanceReports(int totalRegisteredPatients) {
     double maxBill = -1.0;
     int maxIndex = 0;
 
-    for (int i = 0; i < totalRegisteredPatients; i++) {
+    for (int i = 0; i < totalPatients; i++) {
         if (urgencyLevels[i] == 1) normalCount++;
         else if (urgencyLevels[i] == 2) urgentCount++;
         else if (urgencyLevels[i] == 3) criticalCount++;
@@ -160,7 +193,7 @@ void displayPerformanceReports(int totalRegisteredPatients) {
     printf("     PERFORMANCE REPORTS & ANALYTICS    \n");
     printf("========================================\n");
     printf("1. Patient Intake Summary:\n");
-    printf("   - Total Registered Patients : %d\n", totalRegisteredPatients);
+    printf("   - Total Registered Patients : %d\n", totalPatients);
     printf("   - Normal (Level 1)          : %d\n", normalCount);
     printf("   - Urgent (Level 2)          : %d\n", urgentCount);
     printf("   - Critical (Level 3)        : %d\n", criticalCount);
@@ -169,7 +202,19 @@ void displayPerformanceReports(int totalRegisteredPatients) {
     printf("   - Total Revenue Earned      : %.2f LKR\n", totalRevenue);
     printf("   - Total Discounts Granted   : %.2f LKR\n", totalDiscounts);
 
-    printf("\n3. Highest-Paying Patient:\n");
+    printf("\n3. Ward Bed Occupancy Percentages:\n");
+    for (int w = 0; w < TOTAL_WARDS; w++) {
+        int occupiedCount = 0;
+        for (int b = 0; b < totalBedCapacities[w]; b++) {
+            if (bedOccupancy[w][b] == 1) {
+                occupiedCount++;
+            }
+        }
+        double occupancyPercentage = ((double)occupiedCount / totalBedCapacities[w]) * 100.0;
+        printf("   - %-25s : %.1f%% (%d/%d beds)\n", wardNames[w], occupancyPercentage, occupiedCount, totalBedCapacities[w]);
+    }
+
+    printf("\n4. Highest-Paying Patient:\n");
     printf("   - Name                      : %s\n", patientNames[maxIndex]);
     printf("   - Final Bill Amount         : %.2f LKR\n", maxBill);
     printf("========================================\n");
